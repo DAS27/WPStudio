@@ -6,7 +6,6 @@ setup:
 	cp -n .env.example .env|| true
 	php artisan key:gen --ansi
 	touch database/database.sqlite||true
-	php artisan migrate
 
 migrate:
 	php artisan migrate
