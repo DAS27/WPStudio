@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('tittle', 'Basket')
 
+@section('custom-js')
+    <script src="assets/js/vendor/jquery-1.12.0.min.js"></script>
+    <script src="assets/js/plus-minux-box.js"></script>
+@endsection
+
 @section('content')
     <!-- shopping-cart-area start -->
     <div class="cart-main-area pt-95 pb-100">

@@ -10,11 +10,14 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 
     <!-- all css here -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/simple-line-icons.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+
+    <!-- CSRF токен -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     @include('inc.header')
@@ -22,8 +25,7 @@
     @yield('content')
 
     @include('inc.footer')
-    <!-- all js here -->
-    <script src="assets/js/vendor/jquery-1.12.0.min.js"></script>
-    <script src="assets/js/plus-minux-box.js"></script>
+
+    @yield('custom-js')
 </body>
 </html>

@@ -4,15 +4,15 @@
             <div class="row">
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-5">
                     <div class="logo pt-39">
-                        <a href="index.html"><img alt="" src="assets/img/logo/logo.png"></a>
+                        <a href="{{ route('home') }}"><img alt="" src="/assets/img/logo/logo.png"></a>
                     </div>
                 </div>
                 <div class="col-xl-8 col-lg-7 d-none d-lg-block">
                     <div class="main-menu text-center">
                         <nav>
                             <ul>
-                                <li><a href="{{ route('product-details') }}">Товар</a></li>
-                                <li><a href="{{ route('basket') }}">Корзина</a></li>
+                                <li><a href="{{ route('product.show', 1) }}">Товар</a></li>
+                                <li><a href="{{ route('cart.index') }}">Корзина</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -21,8 +21,8 @@
                     <div class="mobile-menu">
                         <nav id="mobile-menu-active">
                             <ul class="menu-overflow">
-                                <li><a href="{{ route('product-details') }}">Товар</a></li>
-                                <li><a href="{{ route('basket') }}">Корзина</a></li>
+                                <li><a href="{{ route('product.show', 1) }}">Товар</a></li>
+                                <li><a href="{{ route('cart.index') }}">Корзина</a></li>
                             </ul>
                         </nav>
                     </div>
