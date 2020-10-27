@@ -6,12 +6,11 @@ setup:
 	cp -n .env.example .env|| true
 	php artisan key:gen --ansi
 	touch database/database.sqlite||true
+	php artisan migrate
+	php artisan db:seed
 
 migrate:
 	php artisan migrate
-
-console:
-	php artisan tinker
 
 log:
 	tail -f storage/logs/laravel.log
@@ -21,9 +20,6 @@ test:
 
 test-coverage:
 	composer phpunit tests -- --coverage-clover build/logs/clover.xml
-
-deploy:
-	git push heroku
 
 lint:
 	composer phpcs
