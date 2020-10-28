@@ -7,14 +7,12 @@
     <script>
         $(document).ready(function () {
             $('.ti-trash').click(function (event) {
-                // alert('item has been deleted')
                 event.preventDefault()
                 removeFromCart()
             })
         })
 
-        const removeFromCart = () => {
-            let id = $('.product-name').data('id');
+        function removeFromCart(id) {
             $.ajax({
                 url: "{{ route('cart.delete') }}",
                 method: "DELETE",
@@ -69,7 +67,7 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal">${{ \Cart::session($_COOKIE['cart_id'])->getSubTotal() }}.00</td>
-                                    <td class="product-remove"><a href="#"><i class="ti-trash"></i></a></td>
+                                    <td class="product-remove"><a onclick="removeFromCart({{ $item->id }})" href="#"><i class="ti-trash"></i></a></td>
                                     @endisset
                                 </tr>
                                 <tr>
