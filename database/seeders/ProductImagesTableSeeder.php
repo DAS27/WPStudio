@@ -18,25 +18,29 @@ class ProductImagesTableSeeder extends Seeder
         DB::table('product_images')->insert([
             [
                 'product_id' => 1,
-                'img' => 'assets/img/product-details/l1.jpg',
+                'img_small' => 'assets/img/product-details/s1.jpg',
+                'img_large' => 'assets/img/product-details/l1.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'product_id' => 2,
-                'img' => 'assets/img/basket/cart-3.jpg',
+                'img_small' => 'assets/img/product-details/s2.jpg',
+                'img_large' => 'assets/img/product-details/l2.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'product_id' => 3,
-                'img' => 'assets/img/basket/cart-4.jpg',
+                'img_small' => 'assets/img/product-details/s3.jpg',
+                'img_large' => 'assets/img/product-details/l3.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'product_id' => 4,
-                'img' => 'assets/img/basket/cart-5.jpg',
+                'img_small' => 'assets/img/product-details/s4.jpg',
+                'img_large' => 'assets/img/product-details/l4.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

@@ -20,7 +20,8 @@ class CreateProductImagesTable extends Migration
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
-            $table->string('img');
+            $table->string('img_large');
+            $table->string('img_small');
             $table->timestamps();
         });
     }
