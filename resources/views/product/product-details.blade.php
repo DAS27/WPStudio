@@ -12,21 +12,21 @@
             })
         })
 
-        function addToCart() {
+        const addToCart = () => {
             let id = $('.details_name').data('id');
             let qty = $('.cart-plus-minus-box').val();
             $.ajax({
-                url: "{{ route('addToCart') }}",
+                url: "{{ route('cart.add') }}",
                 method: "POST",
                 data: {
-                    id: id,
-                    qty: qty
+                    id,
+                    qty
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: (data) => {
-                    console.log(data)
+                success: () => {
+                    window.location.href="{{ route('cart.index') }}"
                 },
                 error: (data) => {
                     console.log(data)
@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="product-details-img">
-                        <img src="/assets/img/product-details/l1.jpg"/>
+                        <img src="/{{ $product->images[0]['img_large'] }}"/>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="product-list-action">
                             <div class="product-list-action-left">
-                                <a class="addtocart-btn" href="#" title="Add to cart">
+                                <a class="addtocart-btn" href="{{ route('cart.add') }}" title="Add to cart">
                                     <i class="ion-bag"></i>
                                     Add to cart
                                 </a>

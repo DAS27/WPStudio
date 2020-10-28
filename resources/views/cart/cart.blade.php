@@ -4,6 +4,35 @@
 @section('custom-js')
     <script src="assets/js/vendor/jquery-1.12.0.min.js"></script>
     <script src="assets/js/plus-minux-box.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.ti-trash').click(function (event) {
+                // alert('item has been deleted')
+                event.preventDefault()
+                removeFromCart()
+            })
+        })
+
+        const removeFromCart = () => {
+            let id = $('.product-name').data('id');
+            $.ajax({
+                url: "{{ route('cart.delete') }}",
+                method: "DELETE",
+                data: {
+                    id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: (data) => {
+                    console.log(data)
+                }
+            });
+        }
+    </script>
 @endsection
 
 @section('content')
@@ -27,6 +56,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr>
+                                    @isset($item)
+                                    <td class="product-thumbnail">
+                                        <a href="{{ route('product.show', $item->id) }}"><img src="/{{ $item->attributes['img_s'] }}" alt="{{ $item->name }}"></a>
+                                    </td>
+                                    <td class="product-name" data-id="{{ $item->id }}"><a href="{{ route('product.show', $item->id) }}">{{ $item->name }}</a></td>
+                                    <td class="product-price-cart"><span class="amount">${{ $item->price }}.00</span></td>
+                                    <td class="product-quantity">
+                                        <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $item->quantity }}">
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal">${{ \Cart::session($_COOKIE['cart_id'])->getSubTotal() }}.00</td>
+                                    <td class="product-remove"><a href="#"><i class="ti-trash"></i></a></td>
+                                    @endisset
+                                </tr>
                                 <tr>
                                     <td class="product-thumbnail">
                                         <a href="#"><img src="assets/img/basket/cart-3.jpg" alt=""></a>
