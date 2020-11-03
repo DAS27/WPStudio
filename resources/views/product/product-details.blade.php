@@ -15,8 +15,9 @@
         const addToCart = () => {
             let id = $('.details_name').data('id');
             let qty = $('.cart-plus-minus-box').val();
+            let routeName = "{{ route('cart.add') }}";
             $.ajax({
-                url: "{{ route('cart.add') }}",
+                url: routeName,
                 method: "POST",
                 data: {
                     id,
