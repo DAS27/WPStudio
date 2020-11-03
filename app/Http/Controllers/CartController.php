@@ -9,10 +9,10 @@ class CartController extends Controller
 {
     public function index()
     {
-        if (!is_null($_COOKIE['cart_id'])) {
+        if (!empty($_COOKIE['cart_id'])) {
             $cartId = $_COOKIE['cart_id'];
-            $item = \Cart::session($cartId)->getContent()->first();
-            return view('cart.cart', compact('item'));
+            $products = \Cart::session($cartId)->getContent();
+            return view('cart.cart', compact('products'));
         }
         return view('cart.cart');
     }
@@ -41,10 +41,10 @@ class CartController extends Controller
         return response()->json(\Cart::getContent());
     }
 
-    public function removeFromCart()
+    public function removeFromCart(Request $request)
     {
         $cartId = $_COOKIE['cart_id'];
-        $product = \Cart::session($cartId)->getContent()->first();
+        $product = Product::where('id', $request->id)->first();
         \Cart::session($cartId)->remove($product->id);
         return view('cart.cart');
     }
