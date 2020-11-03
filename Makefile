@@ -7,7 +7,8 @@ setup:
 	php artisan key:gen --ansi
 	touch database/database.sqlite||true
 	php artisan migrate
-	php artisan db:seed
+	php artisan db:seed --class=ProductsTableSeeder
+	php artisan db:seed --class=ProductImagesTableSeeder
 
 migrate:
 	php artisan migrate
