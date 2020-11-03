@@ -431,7 +431,7 @@ label {
     height: 1px;
     margin: 0 auto;
     position: absolute;
-    right: -7px;
+    right: -12px;
     transition: all 0.4s ease 0s;
     width: 6px
 }
