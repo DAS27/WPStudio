@@ -5,16 +5,17 @@
     <script src="assets/js/vendor/jquery-1.12.0.min.js"></script>
     <script src="assets/js/plus-minux-box.js"></script>
     <script>
-        $(document).ready(function () {
-            $('.ti-trash').click(function (event) {
-                event.preventDefault()
-                removeFromCart()
-            })
+    $(document).ready(function () {
+        $('.ti-trash').click(function (event) {
+            event.preventDefault()
+            removeFromCart(id)
         })
+    })
 
         function removeFromCart(id) {
+            let routeName = "{{ route('cart.delete') }}";
             $.ajax({
-                url: "{{ route('cart.delete') }}",
+                url: routeName,
                 method: "DELETE",
                 data: {
                     id
@@ -53,66 +54,26 @@
                                     <th>Delete</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    @isset($item)
-                                    <td class="product-thumbnail">
-                                        <a href="{{ route('product.show', $item->id) }}"><img src="/{{ $item->attributes['img_s'] }}" alt="{{ $item->name }}"></a>
-                                    </td>
-                                    <td class="product-name" data-id="{{ $item->id }}"><a href="{{ route('product.show', $item->id) }}">{{ $item->name }}</a></td>
-                                    <td class="product-price-cart"><span class="amount">${{ $item->price }}.00</span></td>
-                                    <td class="product-quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $item->quantity }}">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">${{ \Cart::session($_COOKIE['cart_id'])->getSubTotal() }}.00</td>
-                                    <td class="product-remove"><a onclick="removeFromCart({{ $item->id }})" href="#"><i class="ti-trash"></i></a></td>
-                                    @endisset
-                                </tr>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img src="assets/img/basket/cart-3.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Dry Dog Food</a></td>
-                                    <td class="product-price-cart"><span class="amount">$110.00</span></td>
-                                    <td class="product-quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$110.00</td>
-                                    <td class="product-remove"><a href="#"><i class="ti-trash"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img src="assets/img/basket/cart-4.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Cat Buffalo Food</a></td>
-                                    <td class="product-price-cart"><span class="amount">$150.00</span></td>
-                                    <td class="product-quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$150.00</td>
-                                    <td class="product-remove"><a href="#"><i class="ti-trash"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img src="assets/img/basket/cart-5.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Legacy Dog Food</a></td>
-                                    <td class="product-price-cart"><span class="amount">$170.00</span></td>
-                                    <td class="product-quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$170.00</td>
-                                    <td class="product-remove"><a href="#"><i class="ti-trash"></i></a></td>
-                                </tr>
-                                </tbody>
+                                @isset($products)
+                                    @foreach ($products as $product)
+                                    <tbody>
+                                        <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="{{ route('product.show', $product->id) }}"><img src="/{{ $product->attributes['img_s'] }}" alt="{{ $product->name }}"></a>
+                                        </td>
+                                        <td class="product-name" data-id="{{ $product->id }}"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></td>
+                                        <td class="product-price-cart"><span class="amount">${{ $product->price }}.00</span></td>
+                                        <td class="product-quantity">
+                                            <div class="cart-plus-minus">
+                                                <input onchange="updateCount({{ $product->id }})" class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
+                                            </div>
+                                        </td>
+                                        <td class="product-subtotal">${{ \Cart::session($_COOKIE['cart_id'])->getSubTotal() }}.00</td>
+                                        <td class="product-remove"><a onclick="removeFromCart({{ $product->id }})" href="#"><i class="ti-trash"></i></a></td>
+                                    </tr>
+                                    </tbody>
+                                    @endforeach
+                                @endisset
                             </table>
                         </div>
                         <div class="row">
