@@ -15,7 +15,7 @@
         const addToCart = () => {
             let id = $('.details_name').data('id');
             let qty = $('.cart-plus-minus-box').val();
-            let routeName = "{{ route('cart.add') }}";
+            let routeName = "{{ route('cart.store') }}";
             $.ajax({
                 url: routeName,
                 method: "POST",
@@ -64,10 +64,10 @@
                         </div>
 
                         <div class="product-price">
-                            @isset($product->price_new)
-                            <span class="new">${{ $product->price_new }}0</span>
+                            <span class="new">${{ $product->price }}0</span>
+                            @isset($product->price_old)
+                            <span class="old">${{ $product->price_old }}0</span>
                             @endisset
-                            <span class="old">${{ $product->price }}0</span>
                         </div>
                         <div class="in-stock">
                             <span><i class="ion-android-checkbox-outline"></i> In Stock</span>
@@ -80,12 +80,14 @@
                         <div class="quality-wrapper mt-30 product-quantity">
                             <label>Qty:</label>
                             <div class="cart-plus-minus">
+                                <div class="dec qtybutton">-</div>
                                 <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                                <div class="inc qtybutton">+</div>
                             </div>
                         </div>
                         <div class="product-list-action">
                             <div class="product-list-action-left">
-                                <a class="addtocart-btn" href="{{ route('cart.add') }}" title="Add to cart">
+                                <a class="addtocart-btn" href="#" title="Add to cart">
                                     <i class="ion-bag"></i>
                                     Add to cart
                                 </a>
