@@ -17,8 +17,8 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('sku')->nullable();
-            $table->double('price_new')->nullable();
-            $table->double('price');
+            $table->double('price')->default(0);
+            $table->double('price_old')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
