@@ -12,13 +12,58 @@
         })
     })
 
-        function removeFromCart(id) {
-            let routeName = "{{ route('cart.delete') }}";
+        function removeFromCart(id)
+        {
+            let routeName = "{{ route('cart.destroy') }}";
             $.ajax({
                 url: routeName,
-                method: "DELETE",
+                method: 'delete',
                 data: {
                     id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: (data) => {
+                    console.log(data)
+                }
+            });
+        }
+
+        function decrementCount(id)
+        {
+            let routeName = "{{ route('item.dec') }}";
+            let qty = -1;
+            $.ajax({
+                url: routeName,
+                method: 'patch',
+                data: {
+                    id, qty
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: (data) => {
+                    console.log(data)
+                }
+            });
+        }
+
+        function incrementCount(id)
+        {
+            let routeName = "{{ route('item.inc') }}";
+            let qty = +1;
+            $.ajax({
+                url: routeName,
+                method: 'patch',
+                data: {
+                    id, qty
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -65,10 +110,12 @@
                                         <td class="product-price-cart"><span class="amount">${{ $product->price }}.00</span></td>
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
-                                                <input onchange="updateCount({{ $product->id }})" class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
+                                                <div onclick="decrementCount({{ $product->id }})" class="dec qtybutton">-</div>
+                                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
+                                                <div onclick="incrementCount({{ $product->id }})" class="inc qtybutton">+</div>
                                             </div>
                                         </td>
-                                        <td class="product-subtotal">${{ \Cart::session($_COOKIE['cart_id'])->getSubTotal() }}.00</td>
+                                        <td class="product-subtotal">${{ $product->getPriceSum() }}.00</td>
                                         <td class="product-remove"><a onclick="removeFromCart({{ $product->id }})" href="#"><i class="ti-trash"></i></a></td>
                                     </tr>
                                     </tbody>

@@ -48,4 +48,24 @@ class CartController extends Controller
         \Cart::session($cartId)->remove($product->id);
         return view('cart.cart');
     }
+
+    public function incrementCount(Request $request)
+    {
+        $cartId = $_COOKIE['cart_id'];
+        $product = Product::where('id', $request->id)->first();
+        \Cart::session($cartId)->update($product->id, [
+            'quantity' => $request->qty,
+        ]);
+        return view('cart.cart');
+    }
+
+    public function decrementCount(Request $request, $id = 1)
+    {
+        $cartId = $_COOKIE['cart_id'];
+        $product = Product::where('id', $request->id)->first();
+        \Cart::session($cartId)->update($product->id, [
+            'quantity' => $request->qty,
+        ]);
+        return view('cart.cart');
+    }
 }
