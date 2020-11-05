@@ -2,8 +2,6 @@
 @section('tittle', 'Basket')
 
 @section('custom-js')
-    <script src="assets/js/vendor/jquery-1.12.0.min.js"></script>
-    <script src="assets/js/plus-minux-box.js"></script>
     <script>
     $(document).ready(function () {
         $('.ti-trash').click(function (event) {
@@ -14,7 +12,7 @@
 
         function removeFromCart(id)
         {
-            let routeName = "{{ route('cart.destroy') }}";
+            let routeName = "{{ route('cart.item.remove') }}";
             $.ajax({
                 url: routeName,
                 method: 'delete',
@@ -35,13 +33,12 @@
 
         function decrementCount(id)
         {
-            let routeName = "{{ route('item.dec') }}";
-            let qty = -1;
+            let routeName = "{{ route('cart.item.dec') }}";
             $.ajax({
                 url: routeName,
                 method: 'patch',
                 data: {
-                    id, qty
+                    id
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -57,13 +54,12 @@
 
         function incrementCount(id)
         {
-            let routeName = "{{ route('item.inc') }}";
-            let qty = +1;
+            let routeName = "{{ route('cart.item.inc') }}";
             $.ajax({
                 url: routeName,
                 method: 'patch',
                 data: {
-                    id, qty
+                    id
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -103,21 +99,21 @@
                                     @foreach ($products as $product)
                                     <tbody>
                                         <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="{{ route('product.show', $product->id) }}"><img src="/{{ $product->attributes['img_s'] }}" alt="{{ $product->name }}"></a>
-                                        </td>
-                                        <td class="product-name" data-id="{{ $product->id }}"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></td>
-                                        <td class="product-price-cart"><span class="amount">${{ $product->price }}.00</span></td>
-                                        <td class="product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <div onclick="decrementCount({{ $product->id }})" class="dec qtybutton">-</div>
-                                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
-                                                <div onclick="incrementCount({{ $product->id }})" class="inc qtybutton">+</div>
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal">${{ $product->getPriceSum() }}.00</td>
-                                        <td class="product-remove"><a onclick="removeFromCart({{ $product->id }})" href="#"><i class="ti-trash"></i></a></td>
-                                    </tr>
+                                            <td class="product-thumbnail">
+                                                <a href="{{ route('product.show', $product->id) }}"><img src="/{{ $product->attributes['img_s'] }}" alt="{{ $product->name }}"></a>
+                                            </td>
+                                            <td class="product-name" data-id="{{ $product->id }}"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></td>
+                                            <td class="product-price-cart"><span class="amount">${{ $product->price }}.00</span></td>
+                                            <td class="product-quantity">
+                                                <div class="cart-plus-minus">
+                                                    <div onclick="decrementCount({{ $product->id }})" class="dec qtybutton">-</div>
+                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
+                                                    <div onclick="incrementCount({{ $product->id }})" class="inc qtybutton">+</div>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">${{ $product->getPriceSum() }}.00</td>
+                                            <td class="product-remove"><a onclick="removeFromCart({{ $product->id }})" href="#"><i class="ti-trash"></i></a></td>
+                                        </tr>
                                     </tbody>
                                     @endforeach
                                 @endisset

@@ -26,6 +26,7 @@
 
     @include('inc.footer')
 
+    <script src="/assets/js/vendor/jquery-1.12.0.min.js"></script>
     @yield('custom-js')
 </body>
 </html>
