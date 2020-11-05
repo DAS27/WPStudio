@@ -19,24 +19,22 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
         if (!isset($_COOKIE['cart_id'])) {
             $cartId = setcookie('cart_id', uniqid());
         } else {
             $cartId = $_COOKIE['cart_id'];
         }
-        \Cart::session($cartId);
-
-        \Cart::add([
+        $product = Product::where('id', $request->id)->first();
+        $item = \Cart::session($cartId)->add([
             'id' => $product->id,
             'name' => $product->title,
-            'price' => (int) $product->price_new ? $product->price_new : $product->price,
+            'price' => (int) $product->price,
             'quantity' => (int) $request->qty,
             'attributes' => [
                 'img_s' => $product->images[0]->img_small,
                 'img_l' => $product->images[0]->img_large
             ],
-        ]);
+        ]);;
 
         return response()->json(\Cart::getContent());
     }
@@ -54,17 +52,17 @@ class CartController extends Controller
         $cartId = $_COOKIE['cart_id'];
         $product = Product::where('id', $request->id)->first();
         \Cart::session($cartId)->update($product->id, [
-            'quantity' => $request->qty,
+            'quantity' => 1,
         ]);
         return view('cart.cart');
     }
 
-    public function decrementCount(Request $request, $id = 1)
+    public function decrementCount(Request $request)
     {
         $cartId = $_COOKIE['cart_id'];
         $product = Product::where('id', $request->id)->first();
         \Cart::session($cartId)->update($product->id, [
-            'quantity' => $request->qty,
+            'quantity' => -1,
         ]);
         return view('cart.cart');
     }
