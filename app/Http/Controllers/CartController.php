@@ -9,23 +9,14 @@ class CartController extends Controller
 {
     public function index()
     {
-        if (!empty($_COOKIE['cart_id'])) {
-            $cartId = $_COOKIE['cart_id'];
-            $products = \Cart::session($cartId)->getContent();
-            return view('cart.cart', compact('products'));
-        }
-        return view('cart.cart');
+        $products = \Cart::getContent();
+        return view('cart.cart', compact('products'));
     }
 
     public function addToCart(Request $request)
     {
-        if (!isset($_COOKIE['cart_id'])) {
-            $cartId = setcookie('cart_id', uniqid());
-        } else {
-            $cartId = $_COOKIE['cart_id'];
-        }
         $product = Product::where('id', $request->id)->first();
-        $item = \Cart::session($cartId)->add([
+        \Cart::add([
             'id' => $product->id,
             'name' => $product->title,
             'price' => (int) $product->price,
@@ -34,24 +25,34 @@ class CartController extends Controller
                 'img_s' => $product->images[0]->img_small,
                 'img_l' => $product->images[0]->img_large
             ],
-        ]);;
+        ]);
 
         return response()->json(\Cart::getContent());
     }
 
+    public function updateCount(Request $request)
+    {
+        $product = Product::where('id', $request->id)->first();
+        \Cart::update($product->id, [
+            'quantity' => [
+                'relative' => false,
+                'value' => (int) $request->qty
+            ],
+        ]);
+        return view('cart.cart');
+    }
+
     public function removeFromCart(Request $request)
     {
-        $cartId = $_COOKIE['cart_id'];
         $product = Product::where('id', $request->id)->first();
-        \Cart::session($cartId)->remove($product->id);
+        \Cart::remove($product->id);
         return view('cart.cart');
     }
 
     public function incrementCount(Request $request)
     {
-        $cartId = $_COOKIE['cart_id'];
         $product = Product::where('id', $request->id)->first();
-        \Cart::session($cartId)->update($product->id, [
+        \Cart::update($product->id, [
             'quantity' => 1,
         ]);
         return view('cart.cart');
@@ -59,9 +60,8 @@ class CartController extends Controller
 
     public function decrementCount(Request $request)
     {
-        $cartId = $_COOKIE['cart_id'];
         $product = Product::where('id', $request->id)->first();
-        \Cart::session($cartId)->update($product->id, [
+        \Cart::update($product->id, [
             'quantity' => -1,
         ]);
         return view('cart.cart');
