@@ -62,9 +62,9 @@
                         </div>
 
                         <div class="product-price">
-                            <span class="new">${{ $product->price }}0</span>
+                            <span class="new">${{ number_format($product->price, 2) }}</span>
                             @isset($product->price_old)
-                            <span class="old">${{ $product->price_old }}0</span>
+                            <span class="old">${{ number_format($product->price_old, 2) }}</span>
                             @endisset
                         </div>
                         <div class="in-stock">
