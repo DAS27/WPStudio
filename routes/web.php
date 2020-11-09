@@ -22,3 +22,4 @@ Route::post('/cart', [CartController::class, 'addToCart'])->name('cart.store');
 Route::delete('/cart/item-remove', [CartController::class, 'removeFromCart'])->name('cart.item.remove');
 Route::patch('/cart/item-inc', [CartController::class, 'incrementCount'])->name('cart.item.inc');
 Route::patch('/cart/item-dec', [CartController::class, 'decrementCount'])->name('cart.item.dec');
+Route::patch('/cart/item-update', [CartController::class, 'updateCount'])->name('cart.item.update');
