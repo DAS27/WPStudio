@@ -3,12 +3,19 @@
 
 @section('custom-js')
     <script>
-    $(document).ready(function () {
-        $('.ti-trash').click(function (event) {
-            event.preventDefault()
-            removeFromCart(id)
+        $(document).ready(function () {
+            $('.ti-trash').click(function (e) {
+                e.preventDefault()
+            })
+
+            $('.dec').click(function (e) {
+                e.preventDefault()
+            })
+
+            $('.inc').click(function (e) {
+                e.preventDefault()
+            })
         })
-    })
 
         function removeFromCart(id)
         {
@@ -18,6 +25,28 @@
                 method: 'delete',
                 data: {
                     id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: (data) => {
+                    console.log(data)
+                }
+            });
+        }
+
+        function updateCount(id)
+        {
+            let routeName = "{{ route('cart.item.update') }}";
+            let qty = $('.cart-plus-minus-box').val();
+            $.ajax({
+                url: routeName,
+                method: 'patch',
+                data: {
+                    id, qty
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -103,12 +132,12 @@
                                                 <a href="{{ route('product.show', $product->id) }}"><img src="/{{ $product->attributes['img_s'] }}" alt="{{ $product->name }}"></a>
                                             </td>
                                             <td class="product-name" data-id="{{ $product->id }}"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></td>
-                                            <td class="product-price-cart"><span class="amount">${{ $product->price }}.00</span></td>
+                                            <td class="product-price-cart"><span class="amount">${{ number_format($product->price, 2) }}</span></td>
                                             <td class="product-quantity">
                                                 <div class="cart-plus-minus">
-                                                    <div onclick="decrementCount({{ $product->id }})" class="dec qtybutton">-</div>
-                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="{{ $product->quantity }}">
-                                                    <div onclick="incrementCount({{ $product->id }})" class="inc qtybutton">+</div>
+                                                    <div class="dec qtybutton" onclick="decrementCount({{ $product->id }})">-</div>
+                                                    <input class="cart-plus-minus-box" onchange="updateCount({{ $product->id }})" type="text" name="qty" value="{{ $product->quantity }}">
+                                                    <div class="inc qtybutton" onclick="incrementCount({{ $product->id }})">+</div>
                                                 </div>
                                             </td>
                                             <td class="product-subtotal">${{ $product->getPriceSum() }}.00</td>
