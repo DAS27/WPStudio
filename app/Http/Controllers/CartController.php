@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -10,7 +11,10 @@ class CartController extends Controller
     public function index()
     {
         $products = \Cart::getContent();
-        return view('cart.cart', compact('products'));
+        $sortedProducts = $products->sortByDesc(function ($item) {
+            return $item['attributes']['date_insert'];
+        });
+        return view('cart.cart', compact('sortedProducts'));
     }
 
     public function addToCart(Request $request)
@@ -23,7 +27,8 @@ class CartController extends Controller
             'quantity' => (int) $request->qty,
             'attributes' => [
                 'img_s' => $product->images[0]->img_small,
-                'img_l' => $product->images[0]->img_large
+                'img_l' => $product->images[0]->img_large,
+                'date_insert' => Carbon::now()
             ],
         ]);
 
