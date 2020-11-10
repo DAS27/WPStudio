@@ -37,8 +37,10 @@ class CartController extends Controller
 
     public function updateCount(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
-        \Cart::update($product->id, [
+        $productId = Product::where('id', $request->id)
+            ->pluck('id')
+            ->first();
+        \Cart::update($productId, [
             'quantity' => [
                 'relative' => false,
                 'value' => (int) $request->qty
@@ -49,15 +51,19 @@ class CartController extends Controller
 
     public function removeFromCart(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
-        \Cart::remove($product->id);
+        $productId = Product::where('id', $request->id)
+            ->pluck('id')
+            ->first();
+        \Cart::remove($productId);
         return view('cart.cart');
     }
 
     public function incrementCount(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
-        \Cart::update($product->id, [
+        $productId = Product::where('id', $request->id)
+            ->pluck('id')
+            ->first();
+        \Cart::update($productId, [
             'quantity' => 1,
         ]);
         return view('cart.cart');
@@ -65,8 +71,8 @@ class CartController extends Controller
 
     public function decrementCount(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
-        \Cart::update($product->id, [
+        $productId = Product::where('id', $request->id)->pluck('id')->first();
+        \Cart::update($productId, [
             'quantity' => -1,
         ]);
         return view('cart.cart');
