@@ -124,8 +124,8 @@
                                     <th>Delete</th>
                                 </tr>
                                 </thead>
-                                @isset($products)
-                                    @foreach ($products as $product)
+                                @isset($sortedProducts)
+                                    @foreach ($sortedProducts as $product)
                                     <tbody>
                                         <tr>
                                             <td class="product-thumbnail">
