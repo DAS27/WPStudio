@@ -7,14 +7,6 @@
             $('.ti-trash').click(function (e) {
                 e.preventDefault()
             })
-
-            $('.dec').click(function (e) {
-                e.preventDefault()
-            })
-
-            $('.inc').click(function (e) {
-                e.preventDefault()
-            })
         })
 
         function removeFromCart(id)
